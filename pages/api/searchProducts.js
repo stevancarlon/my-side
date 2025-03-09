@@ -5,10 +5,17 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: "Method not allowed" });
   }
 
-  const { page } = req.query;
+  const { page, category } = req.query;
 
   try {
-    const response = await axiosExternal.get(`/products?page=${page ?? 1}`);
+    let response;
+    if (category) {
+      response = await axiosExternal.get(`/products/category?type=${category}`);
+    } else {
+      response = await axiosExternal.get(
+        `/products?page=${page ?? 1}&limit=16`
+      );
+    }
     const products = response.data;
     res.status(200).json(products);
   } catch (error) {
