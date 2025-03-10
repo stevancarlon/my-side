@@ -7,7 +7,7 @@ export default function Home() {
 
   useEffect(() => {
     router.push("/app/search-products");
-  }, []);
+  }, [router]);
 
   return null;
 }

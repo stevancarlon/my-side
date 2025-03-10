@@ -62,9 +62,9 @@ export const SearchProductsTemplate = ({ data }) => {
           <Filters />
         </S.FiltersContainer>
         <S.ResultsContainer>
-          {filteredProducts?.map((product) => {
-            return <ProductItem product={product} />;
-          })}
+          {filteredProducts?.map((product) => (
+            <ProductItem key={product.id} product={product} />
+          ))}
         </S.ResultsContainer>
       </S.Content>
     </S.Container>
