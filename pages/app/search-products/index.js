@@ -28,11 +28,12 @@ export async function getServerSideProps() {
 }
 
 export default function SearchProducts({ products }) {
-  const { category, priceRange, applyFilter } = useFilters();
+  const { category, priceRange, applyFilter, setProductSearch } = useFilters();
   const [filteredProducts, setFilteredProducts] = useState(products);
 
   // set category to local storage
   useEffect(() => {
+    setProductSearch("");
     const fetchFilteredProducts = async () => {
       try {
         const response = await axiosInternal.get("/api/searchProducts", {
