@@ -2,7 +2,7 @@ import { SearchProductsTemplate } from "@/src/components/templates/SearchProduct
 import { filterByPriceRange } from "@/src/helpers/filterByPriceRange";
 import { axiosInternal } from "@/src/lib/axiosInternal";
 import { useFilters } from "@/src/zustand/useFilters";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export async function getServerSideProps() {
   try {
@@ -31,34 +31,31 @@ export default function SearchProducts({ products }) {
   const { category, priceRange, applyFilter } = useFilters();
   const [filteredProducts, setFilteredProducts] = useState(products);
 
-  const fetchFilteredProducts = useCallback(async () => {
-    try {
-      const response = await axiosInternal.get("/api/searchProducts", {
-        params: { category },
-      });
-
-      const filteredByPrice = filterByPriceRange(
-        response.data.products,
-        priceRange
-      );
-      setFilteredProducts(filteredByPrice);
-    } catch (error) {
-      console.error("Error fetching filtered products:", error);
-    }
-  }, [category, priceRange]);
-
-  const updateLocalFilters = useCallback(() => {
-    const filteredByPrice = filterByPriceRange(products, priceRange);
-    setFilteredProducts(filteredByPrice);
-  }, [products, priceRange]);
-
+  // set category to local storage
   useEffect(() => {
+    const fetchFilteredProducts = async () => {
+      try {
+        const response = await axiosInternal.get("/api/searchProducts", {
+          params: { category },
+        });
+
+        const filteredByPrice = filterByPriceRange(
+          response.data.products,
+          priceRange
+        );
+        setFilteredProducts(filteredByPrice);
+      } catch (error) {
+        console.error("Error fetching filtered products:", error);
+      }
+    };
+
     if (category) {
       fetchFilteredProducts();
     } else {
-      updateLocalFilters();
+      const filteredByPrice = filterByPriceRange(products, priceRange);
+      setFilteredProducts(filteredByPrice);
     }
-  }, [category, fetchFilteredProducts, updateLocalFilters, applyFilter]);
+  }, [applyFilter]);
 
   return <SearchProductsTemplate data={filteredProducts} />;
 }
