@@ -3,6 +3,8 @@
 ## Visão Geral
 Este projeto é um desafio de código para a empresa MySide.
 
+Link para deploy na Vercel: https://my-side-ochre.vercel.app/
+
 ## Observações
 - A FakeStoreAPI é limitada, muitas das funcionalidades (como pesquisa semântica) tiveram que ser aplicadas diretamente no front-end, o que não é adequado. Os filtros e pesquisa por nome ocorreriam no back-end em uma aplicação real, por isso tive que criar um context para "pesquisar com filtros".
 
